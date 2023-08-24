@@ -15,6 +15,7 @@ public class BulkSmsApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BulkSmsApplication.class, args);
+
 	}
 
 	@Bean

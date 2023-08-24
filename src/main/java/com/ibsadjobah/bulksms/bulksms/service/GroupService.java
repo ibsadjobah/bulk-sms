@@ -1,5 +1,7 @@
 package com.ibsadjobah.bulksms.bulksms.service;
 
+import com.ibsadjobah.bulksms.bulksms.exception.ResourceAlreadyExistException;
+import com.ibsadjobah.bulksms.bulksms.exception.ResourceNotFoundException;
 import com.ibsadjobah.bulksms.bulksms.model.entities.Group;
 import com.ibsadjobah.bulksms.bulksms.repository.GroupRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,9 @@ public class GroupService {
 
     public Group show(Long groupId)
     {
-        return  groupRepository.findById(groupId).get();
+        Optional<Group> optionalGroup = groupFindbyId(groupId);
+
+        return optionalGroup.get();
     }
 
     public Group create(Group group)
@@ -30,24 +34,44 @@ public class GroupService {
         Optional<Group> optionalGroup = groupRepository.findByName(group.getName());
 
         if (optionalGroup.isPresent())
-            throw new RuntimeException("Ce nom existe deja");
+            throw new ResourceAlreadyExistException("Ce nom existe deja");
 
 
         return groupRepository.save(group);
+    }
+
+    public Group update(Long groupId, Group group)
+    {
+        Optional<Group> optionalGroup = groupFindbyId(groupId);
+
+        group.setId(optionalGroup.get().getId());
+
+        return groupRepository.save(group);
+    }
+
+    public Group delete(Long groupId)
+    {
+        Optional<Group> optionalGroup = groupRepository.findById(groupId);
+
+        groupRepository.deleteById(groupId);
+
+        return optionalGroup.get();
+    }
+
+    private Optional<Group> groupFindbyId(Long groupId) {
+        Optional<Group> optionalGroup = groupRepository.findById(groupId);
+
+        if (optionalGroup.isEmpty())
+            throw new ResourceNotFoundException("Ce group n'existe pas");
+        return optionalGroup;
     }
 
     /**/
 
     /*
 
-    public Group update(Long groupId, Group group)
-    {
 
-    }
 
-    public void delete(Long groupId)
-    {
-
-    }*/
+    */
 
 }
