@@ -124,12 +124,11 @@ public class GroupController {
     @DeleteMapping("{groupId}")
     public ResponseEntity<HttpResponse> delete(@PathVariable("groupId") Long groupId)
     {
-        GroupResponse data = modelMapper.map(groupService.delete(groupId), GroupResponse.class);
+        groupService.delete(groupId);
 
         HttpResponse httpResponse = HttpResponse.builder()
                 .code(HttpStatus.OK.value())
                 .message(" Suppression du groupe " +groupId)
-                .data((Map.of("groupe", data)))
                 .build();
 
         return ResponseEntity.ok()
