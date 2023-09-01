@@ -40,6 +40,7 @@ public class BulkSmsApplication {
 			group3.setName("DevOps");
 
 			groupRepository.saveAll(Arrays.asList(group1, group2, group3));
+
 		};
 	}
 

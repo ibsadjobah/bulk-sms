@@ -5,6 +5,10 @@ import com.ibsadjobah.bulksms.bulksms.model.entities.Group;
 import com.ibsadjobah.bulksms.bulksms.model.requests.GroupRequest;
 import com.ibsadjobah.bulksms.bulksms.model.responses.GroupResponse;
 import com.ibsadjobah.bulksms.bulksms.service.GroupService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -19,6 +23,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/groups")
 @RequiredArgsConstructor
+@Api("api/v1/groups")
 public class GroupController {
 
     private final GroupService groupService;
@@ -26,6 +31,10 @@ public class GroupController {
 
 
     @GetMapping
+    @ApiOperation(value = "Liste des groupes", notes = "Affiche la liste de tous les groupes", response = HttpResponse.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Liste des articles")
+    })
     public ResponseEntity<HttpResponse> list()
     {
         List<Group> groups = groupService.all();
@@ -62,6 +71,11 @@ public class GroupController {
     }
 
     @GetMapping("{groupId}")
+    @ApiOperation(value = "Affichage d'un groupe à partir de son ID", response = HttpResponse.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Affichage d'un groupe"),
+            @ApiResponse(code = 404, message = "Id du groupe n'a pas été retrouvé"),
+    })
     public ResponseEntity<HttpResponse> show(@PathVariable("groupId") Long groupId)
     {
         /*Group group = groupService.show(groupId);
@@ -85,6 +99,11 @@ public class GroupController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "Création d'un groupe", response = HttpResponse.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Ajout d'un nouveau groupe"),
+            @ApiResponse(code = 400, message = "Le nom du groupe existe déjà"),
+    })
     public ResponseEntity<HttpResponse> create(@Valid @RequestBody GroupRequest groupRequest)
     {
         Group group = new Group();
@@ -105,6 +124,11 @@ public class GroupController {
     }
 
     @PutMapping("{groupId}")
+    @ApiOperation(value = "Mise à jour d'un groupe", response = HttpResponse.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Mise à jour du groupe"),
+            @ApiResponse(code = 400, message = "Le nom du groupe existe déjà"),
+    })
     public ResponseEntity<HttpResponse> update(@PathVariable("groupId") Long groupId, @Valid @RequestBody GroupRequest groupRequest)
     {
         Group update = groupService.update(groupId, modelMapper.map(groupRequest, Group.class));
@@ -122,6 +146,11 @@ public class GroupController {
     }
 
     @DeleteMapping("{groupId}")
+    @ApiOperation(value = "Suppréssion d'un groupe", response = HttpResponse.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Suppression d'un groupe"),
+            @ApiResponse(code = 404, message = "Id du groupe n'a pas été retrouvé"),
+    })
     public ResponseEntity<HttpResponse> delete(@PathVariable("groupId") Long groupId)
     {
         groupService.delete(groupId);
