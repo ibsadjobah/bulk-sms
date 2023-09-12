@@ -1,6 +1,7 @@
 package com.ibsadjobah.bulksms.bulksms.model.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Table(name = "customers")
 public class Customer {
 
@@ -25,6 +27,10 @@ public class Customer {
 
     @Column(name = "email", unique = true, nullable = false)
     private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
 
     private LocalDateTime created_at;
     private LocalDateTime updated_at;

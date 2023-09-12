@@ -3,6 +3,7 @@ package com.ibsadjobah.bulksms.bulksms.model.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,6 +20,9 @@ public class Group {
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;
+
+    @OneToMany(mappedBy = "group")
+    private List<Customer> customer;
 
 
 }

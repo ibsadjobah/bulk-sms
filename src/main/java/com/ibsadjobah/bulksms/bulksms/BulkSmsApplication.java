@@ -23,7 +23,7 @@ public class BulkSmsApplication {
 		return  new ModelMapper();
 	}
 
-	/*
+
 	@Bean
 	public CommandLineRunner groupSeeder(GroupRepository groupRepository)
 	{
@@ -43,6 +43,6 @@ public class BulkSmsApplication {
 			groupRepository.saveAll(Arrays.asList(group1, group2, group3));
 
 		};
-	}*/
+	}
 
 }

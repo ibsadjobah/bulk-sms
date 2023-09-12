@@ -85,7 +85,7 @@ public class CustomerService {
         Optional<Customer> optionalCustomer = customerRepository.findById(customerId);
 
         if (optionalCustomer.isEmpty())
-            throw new ResourceNotFoundException("Le groupe avec l'ID " +customerId +" n'existe pas");
+            throw new ResourceNotFoundException("Le client avec l'ID " +customerId +" n'existe pas");
 
         return optionalCustomer;
     }
