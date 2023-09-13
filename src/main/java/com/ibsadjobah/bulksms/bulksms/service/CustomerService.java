@@ -50,7 +50,7 @@ public class CustomerService {
     }
 
     public Customer update(Long customerId, Customer customer){
-        log.info("Mis à jour du client" +customerId);
+        log.info("Mis à jour du client " + customerId);
         Optional<Customer> optionalCustomer = customerFindById(customerId);
 
         Optional<Customer> byPhone = customerRepository.findByPhone(customer.getPhone());

@@ -5,6 +5,7 @@ import com.ibsadjobah.bulksms.bulksms.model.entities.Customer;
 import com.ibsadjobah.bulksms.bulksms.model.requests.CustomerRequest;
 import com.ibsadjobah.bulksms.bulksms.model.responses.CustomerResponse;
 import com.ibsadjobah.bulksms.bulksms.service.CustomerService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -80,7 +81,7 @@ public class CustomerController {
         HttpResponse httpResponse = HttpResponse.builder()
                 .code(HttpStatus.OK.value())
                 .message("ajout d'un nouveau client")
-                .data(Map.of("le client", data))
+                .data(Map.of("client", data))
                 .build();
 
         return ResponseEntity.ok()
@@ -100,7 +101,7 @@ public class CustomerController {
 
         HttpResponse httpResponse = HttpResponse.builder()
                 .code(HttpStatus.OK.value())
-                .message("Mise à jour du client " +customerId)
+                .message(" Mise à jour du client " +customerId)
                 .data((Map.of("client", data)))
                 .build();
 
