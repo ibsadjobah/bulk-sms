@@ -6,6 +6,8 @@ import com.ibsadjobah.bulksms.bulksms.model.requests.CustomerRequest;
 import com.ibsadjobah.bulksms.bulksms.model.responses.CustomerResponse;
 import com.ibsadjobah.bulksms.bulksms.service.CustomerService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -21,12 +23,17 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/customer")
 @RequiredArgsConstructor
+@ApiOperation("api/v1/customer")
 public class CustomerController {
 
     private final CustomerService customerService;
     private final ModelMapper modelMapper;
 
     @GetMapping()
+    @ApiOperation(value = "Liste des clients", notes = "Affiche la liste de tous les clients", response = HttpResponse.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Liste des clients")
+    })
     public ResponseEntity<HttpResponse> list(){
 
         List<Customer> customers = customerService.all();
@@ -52,6 +59,11 @@ public class CustomerController {
     }
 
     @GetMapping("{customerId}")
+    @ApiOperation(value = "Affichage d'un client à partir de son ID", response = HttpResponse.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Affichage d'un client"),
+            @ApiResponse(code = 404, message = "ID du client n'a pas été retrouvé"),
+    })
     public ResponseEntity<HttpResponse> show(@PathVariable("customerId") Long customerId){
 
         CustomerResponse data = modelMapper.map(customerService.show(customerId), CustomerResponse.class);
@@ -68,6 +80,12 @@ public class CustomerController {
 
 
     @PostMapping
+    @ApiOperation(value = "Ajout d'un client", response = HttpResponse.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Ajout d'un nouveau client"),
+            @ApiResponse(code = 400, message = "Ce numero telephone existe déjà"),
+            @ApiResponse(code = 400, message = "Cet email existe déjà"),
+    })
     public ResponseEntity<HttpResponse> create(@Valid @RequestBody CustomerRequest customerRequest){
 
         Customer customer =  new Customer();
@@ -92,6 +110,12 @@ public class CustomerController {
 
 
     @PutMapping("{customerId}")
+    @ApiOperation(value = "Mise à jour d'un client", response = HttpResponse.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Mise à jour du client"),
+            @ApiResponse(code = 400, message = "Ce numero de telephone existe déjà"),
+            @ApiResponse(code = 400, message = "Cet email déjà")
+    })
     public ResponseEntity<HttpResponse> update(@PathVariable("customerId") Long customerId, @Valid @RequestBody  CustomerRequest customerRequest){
 
         Customer update = customerService.update(customerId, modelMapper.map(customerRequest, Customer.class));
@@ -111,6 +135,11 @@ public class CustomerController {
     }
 
     @DeleteMapping("{customerId}")
+    @ApiOperation(value = "Suprression d'un client", response = HttpResponse.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Suppression du client"),
+            @ApiResponse(code = 404, message = "Id du client pas été retrouvé")
+    })
     public ResponseEntity<HttpResponse> delete(@PathVariable("customerId") Long customerId){
 
         customerService.delete(customerId);
