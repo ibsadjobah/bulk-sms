@@ -113,7 +113,7 @@ public class GroupController {
 
         HttpResponse httpResponse = HttpResponse.builder()
                 .code(HttpStatus.OK.value())
-                .message("Ajouut d'un nouveau groupe")
+                .message("Ajout d'un nouveau groupe")
                 .data((Map.of("groupe", data)))
                 .build();
 

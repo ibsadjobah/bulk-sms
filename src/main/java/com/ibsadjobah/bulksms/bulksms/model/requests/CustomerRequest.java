@@ -1,13 +1,17 @@
 package com.ibsadjobah.bulksms.bulksms.model.requests;
 
+import com.ibsadjobah.bulksms.bulksms.model.entities.Group;
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Getter
+@Setter
 public class CustomerRequest {
 
     @Length(min = 5, max = 50, message = "le nom doit être compris entre 5 et 50 caractère")
@@ -17,7 +21,8 @@ public class CustomerRequest {
     private String phone;
 
     @Email(message = "veuiller entrer une addresse email valide")
-    @NotBlank(message = "l'addresse email ne peut pas être vide")
-    @Pattern(regexp = ".*@gmail\\.com$", message = "L'adresse e-mail doit se terminer par @gmail.com")
     private String email;
+
+    @NotNull(message = "Le group du client est obligatoire")
+    private Integer groupId;
 }

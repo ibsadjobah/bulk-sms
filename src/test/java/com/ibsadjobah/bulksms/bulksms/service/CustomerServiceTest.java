@@ -6,6 +6,7 @@ import com.ibsadjobah.bulksms.bulksms.model.entities.Customer;
 import com.ibsadjobah.bulksms.bulksms.model.entities.Group;
 import com.ibsadjobah.bulksms.bulksms.repository.CustomerRepository;
 
+import com.ibsadjobah.bulksms.bulksms.repository.GroupRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -34,8 +35,11 @@ class CustomerServiceTest {
     @Mock
     private CustomerRepository customerRepository;
 
+    @Mock
+    private GroupRepository groupRepository;
+
     @BeforeEach
-    void setUp(){customerService = new CustomerService(customerRepository);}
+    void setUp(){customerService = new CustomerService(customerRepository, groupRepository); }
 
     @Test
     void itShouldListEmptyCustomer() {

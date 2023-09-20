@@ -5,6 +5,7 @@ import com.ibsadjobah.bulksms.bulksms.model.entities.Customer;
 import com.ibsadjobah.bulksms.bulksms.repository.CustomerRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,7 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Arrays;
-
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -194,22 +194,32 @@ public class CustomerControllerTest {
                 .andExpect(jsonPath("$.message",is("ce numero de telephone existe déjà")));
     }
 
-/*
+
+    /*
+
     @Test
     @Order(7)
     void itShouldNotCreateCustomerWhenEmailAlreadyExist() throws Exception{
         //given
-        Customer customer = customerRepository.save(Customer.builder()
+        Customer EmailExist = customerRepository.save(Customer.builder()
                 .name("messii")
                 .phone("661334455")
-                .email("messi@gmail.com")
+                .email("sadio@gmail.com")
                 .build());
+
+        Customer customer = Customer.builder()
+                .name("messii")
+                .phone("661334455")
+                .email("sadio@gmail.com")
+                .build();
+
+
         // When
         // Then
 
         this.mockMvc.perform(
                 MockMvcRequestBuilders.post(BASE_URL + "/customer")
-                        .content(mapper.writeValueAsString(customer))
+                        .content(mapper.writeValueAsString(EmailExist))
                         .contentType(contentType)
         )
                 .andDo(print())
@@ -217,7 +227,8 @@ public class CustomerControllerTest {
                 .andExpect(jsonPath("$.code",is(409)))
                 .andExpect(jsonPath("$.message", is("cet email exist déjà")));
 
-    }*/
+
+    } */
 
     @Test
     @Order(8)

@@ -1,15 +1,14 @@
 package com.ibsadjobah.bulksms.bulksms.model.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -28,9 +27,17 @@ public class Customer {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "group_id")
+    @Column(name = "group_id")
+    private Long groupId;
+
+
+    @ManyToOne(targetEntity = Group.class, fetch = FetchType.EAGER, cascade  = CascadeType.PERSIST)
+    @JoinColumn(name = "group_id", referencedColumnName = "group_id", nullable = false, insertable = false, updatable = false)
     private Group group;
+
+   /* @ManyToOne()
+    private Group group;*/
+
 
     private LocalDateTime created_at;
     private LocalDateTime updated_at;

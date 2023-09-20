@@ -47,10 +47,12 @@ public class BulkSmsApplication {
 		};
 	}
 
+	/*
 	@Bean
 	public CommandLineRunner customerSeeder(CustomerRepository customerRepository)
 	{
 		return args -> {
+
 
 
 			Customer customer = Customer.builder()
@@ -62,6 +64,7 @@ public class BulkSmsApplication {
 
 		    Customer customer1 = new Customer();
 
+
 			customer1.setName("hihihi");
 			customer1.setPhone("621223344");
 			customer1.setEmail("hihi@gmail.com");
@@ -69,6 +72,6 @@ public class BulkSmsApplication {
 			customerRepository.saveAll(Arrays.asList(customer, customer1));
 
 		};
-	}
+	}*/
 
 }

@@ -3,7 +3,9 @@ package com.ibsadjobah.bulksms.bulksms.service;
 import com.ibsadjobah.bulksms.bulksms.exception.ResourceAlreadyExistException;
 import com.ibsadjobah.bulksms.bulksms.exception.ResourceNotFoundException;
 import com.ibsadjobah.bulksms.bulksms.model.entities.Customer;
+import com.ibsadjobah.bulksms.bulksms.model.entities.Group;
 import com.ibsadjobah.bulksms.bulksms.repository.CustomerRepository;
+import com.ibsadjobah.bulksms.bulksms.repository.GroupRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,12 +21,19 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
 
+    private final GroupRepository groupRepository;
+
     public List<Customer> all(){
 
         log.info("Liste des clients");
         return customerRepository.findAll();
 
     }
+
+    /*public List<Customer> allWithGroups() {
+        return customerRepository.findAllWithGroups(); // Utilisez une méthode appropriée dans le repository
+    }*/
+
 
     public Customer show(Long customerId){
         log.info("affichage du client" +customerId);
@@ -33,21 +42,47 @@ public class CustomerService {
         return optionalCustomer.get();
     }
 
+
     public Customer create(Customer customer){
 
-        log.info("creation d'un client");
-        Optional<Customer> optionalCustomer = customerRepository.findByPhone(customer.getPhone());
-        Optional<Customer> optionalCustomer1 = customerRepository.findByEmail(customer.getEmail());
 
-        if (optionalCustomer.isPresent()){
+        log.info("creation d'un client");
+        Optional<Customer> customerbyPhone = customerRepository.findByPhone(customer.getPhone());
+        Optional<Customer> customerbyEmail = customerRepository.findByEmail(customer.getEmail());
+
+
+
+        if(customerbyPhone.isPresent())
             throw new ResourceAlreadyExistException("ce numero de telephone existe déjà");
-        } else if ( optionalCustomer1.isPresent()) {
+
+        if( customerbyEmail.isPresent())
             throw new ResourceAlreadyExistException("cet email exist déjà");
-        }else {
-            return customerRepository.save(customer);
-        }
+
+
+        return customerRepository.save(customer);
+
+        /*Customer customerVerification = customerRepository.findById(customerId).orElse(null);
+
+         if (customerVerification != null){
+             Group group = customerVer.getGroup();
+             if (group != null){
+                 Long groupId = group.getId();
+                 System.out.println("ID du groupe associé au client : " + groupId);
+                 String groupName = group.getName();
+             }else {
+                 // Le client n'est pas lié à un groupe
+                 System.out.println("Le client n'est pas lié à un groupe");
+             }
+
+         }else {
+             System.out.println("Le client n a pas ete trouvé");
+
+         }*/
 
     }
+
+
+
 
     public Customer update(Long customerId, Customer customer){
         log.info("Mis à jour du client " + customerId);
@@ -56,17 +91,16 @@ public class CustomerService {
         Optional<Customer> byPhone = customerRepository.findByPhone(customer.getPhone());
         Optional<Customer> byEmail = customerRepository.findByEmail(customer.getEmail());
 
-        if (byPhone.isPresent() && byPhone.get().getId() !=customerId){
+        if (byPhone.isPresent() && byPhone.get().getId() !=customerId)
             throw new ResourceAlreadyExistException("Le client avec ce numero de telephone " +customer.getPhone()+ " existe déja");
 
-        } else if (byEmail.isPresent() && byEmail.get().getId() !=customerId) {
+        if (byEmail.isPresent() && byEmail.get().getId() !=customerId)
             throw new ResourceAlreadyExistException("Le client avec cet email" +customer.getEmail()+ " existe déja");
 
-        }
-        else
-            customer.setId(optionalCustomer.get().getId());
+        customer.setId(optionalCustomer.get().getId());
 
         return customerRepository.save(customer);
+
     }
 
     public Customer delete(Long customerId){

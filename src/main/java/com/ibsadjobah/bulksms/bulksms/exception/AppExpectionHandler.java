@@ -62,4 +62,21 @@ public class AppExpectionHandler {
         return ResponseEntity.badRequest().body(httpResponse);
     }
 
+    /*
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<HttpResponse> IllegalArgumentException(IllegalArgumentException exception){
+
+        HttpResponse  httpResponse = HttpResponse.builder()
+                .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .message(exception.getMessage())
+                .build();
+
+        return ResponseEntity.ok()
+                .body(httpResponse);
+
+    }*/
+
+
+
+
 }

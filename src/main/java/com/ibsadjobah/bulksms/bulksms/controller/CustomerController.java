@@ -2,9 +2,12 @@ package com.ibsadjobah.bulksms.bulksms.controller;
 
 import com.ibsadjobah.bulksms.bulksms.model.HttpResponse;
 import com.ibsadjobah.bulksms.bulksms.model.entities.Customer;
+import com.ibsadjobah.bulksms.bulksms.model.entities.Group;
 import com.ibsadjobah.bulksms.bulksms.model.requests.CustomerRequest;
+import com.ibsadjobah.bulksms.bulksms.model.requests.GroupRequest;
 import com.ibsadjobah.bulksms.bulksms.model.responses.CustomerResponse;
 import com.ibsadjobah.bulksms.bulksms.service.CustomerService;
+import com.ibsadjobah.bulksms.bulksms.service.GroupService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -20,13 +23,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toList;
+
 @RestController
-@RequestMapping("api/v1/customer")
+@RequestMapping("api/v1/customers")
 @RequiredArgsConstructor
-@ApiOperation("api/v1/customer")
+@ApiOperation("api/v1/customers")
 public class CustomerController {
 
     private final CustomerService customerService;
+
+    private final GroupService groupService;
+
+
     private final ModelMapper modelMapper;
 
     @GetMapping()
@@ -38,14 +47,17 @@ public class CustomerController {
 
         List<Customer> customers = customerService.all();
 
+
         List<CustomerResponse>  data = customers.stream()
                 .map(customer -> CustomerResponse.builder()
                         .id(customer.getId())
                         .name(customer.getName())
                         .phone(customer.getPhone())
                         .email(customer.getEmail())
+                        .group_id(customer.getGroup())
                         .build())
-                .collect(Collectors.toList());
+
+                .toList();
 
 
         HttpResponse httpResponse = HttpResponse.builder()
@@ -58,7 +70,32 @@ public class CustomerController {
                 .body(httpResponse);
     }
 
-    @GetMapping("{customerId}")
+    /* ESSAIE
+    @GetMapping("/list")
+    public ResponseEntity<HttpResponse> liste() {
+        List<Customer> customers = customerService.allWithGroups();
+
+        List<CustomerResponse> data = customers.stream()
+                .map(customer -> CustomerResponse.builder()
+                        .id(customer.getId())
+                        .name(customer.getName())
+                        .phone(customer.getPhone())
+                        .email(customer.getEmail())
+                        .id(customer.getGroup_id() != null ? customer.getGroup_id().getId() : null)
+                        .build())
+                .collect(Collectors.toList());
+
+        HttpResponse httpResponse = HttpResponse.builder()
+                .code(HttpStatus.OK.value())
+                .message("Liste des clients avec GroupId")
+                .data(Map.of("clients", data))
+                .build();
+
+        return ResponseEntity.ok().body(httpResponse);
+    }*/
+
+
+@GetMapping("{customerId}")
     @ApiOperation(value = "Affichage d'un client à partir de son ID", response = HttpResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Affichage d'un client"),
@@ -79,20 +116,25 @@ public class CustomerController {
     }
 
 
-    @PostMapping
+
+@PostMapping
     @ApiOperation(value = "Ajout d'un client", response = HttpResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Ajout d'un nouveau client"),
             @ApiResponse(code = 400, message = "Ce numero telephone existe déjà"),
             @ApiResponse(code = 400, message = "Cet email existe déjà"),
     })
-    public ResponseEntity<HttpResponse> create(@Valid @RequestBody CustomerRequest customerRequest){
+    public ResponseEntity<HttpResponse> create(@Valid @RequestBody  CustomerRequest customerRequest){
 
         Customer customer =  new Customer();
+
+        Group group = groupService.findById(Long.valueOf(customerRequest.getGroupId()));
 
         customer.setName(customerRequest.getName());
         customer.setPhone(customerRequest.getPhone());
         customer.setEmail(customerRequest.getEmail());
+        customer.setGroup(group);
+
 
         CustomerResponse data = modelMapper.map(customerService.create(customer), CustomerResponse.class);
 

@@ -80,4 +80,13 @@ public class GroupService {
     }
 
 
+    public Group findById(Long groupId) {
+        Optional<Group> findGroup = groupRepository.findById(groupId);
+        
+        if (findGroup.isPresent())
+            return findGroup.get();
+
+        throw new ResourceNotFoundException("Le groupe avec l'ID " +groupId+" n'existe pas");
+
+    }
 }
