@@ -54,6 +54,7 @@ public class CampagneControllerTest {
     }
 
     @Test
+    @Order(1)
     void itShouldNotListCampagne() throws Exception {
 
         // Given
@@ -73,6 +74,7 @@ public class CampagneControllerTest {
     }
 
     @Test
+    @Order(2)
     void itShouldListCampagne() throws Exception{
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
@@ -103,6 +105,7 @@ public class CampagneControllerTest {
     }
 
     @Test
+    @Order(3)
     void itShouldNotShowCampagneById() throws Exception {
         int campagneId = 65;
 
@@ -121,6 +124,7 @@ public class CampagneControllerTest {
     }
 
     @Test
+    @Order(4)
     void itShouldShowCampagneById() throws  Exception{
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
@@ -177,6 +181,7 @@ public class CampagneControllerTest {
     }*/
 
     @Test
+    @Order(5)
     void itSouldNotDeleteCampagneById() throws Exception {
 
         int campagneId = 90;
@@ -195,6 +200,7 @@ public class CampagneControllerTest {
     }
 
     @Test
+    @Order(6)
     void itShouldDeleteCampagneById() throws Exception {
 
 

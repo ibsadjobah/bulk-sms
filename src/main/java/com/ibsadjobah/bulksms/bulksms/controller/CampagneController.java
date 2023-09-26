@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -88,7 +89,7 @@ public class CampagneController {
            @ApiResponse(code = 200, message = "Creation d'une nouvelle campagne"),
            @ApiResponse(code = 400, message = "Cette reference existe déjà"),
    })
-   public ResponseEntity<HttpResponse> create(@RequestBody CampagneRequest campagneRequest){
+   public ResponseEntity<HttpResponse> create(@Valid @RequestBody CampagneRequest campagneRequest){
 
        log.info("Creation d'une campagne");
         Campagne campagne = new Campagne();
@@ -117,7 +118,7 @@ public class CampagneController {
            @ApiResponse(code = 200, message = "Mise à jour d'une campagne"),
            @ApiResponse(code = 400, message = "Cette reference existe déjà"),
    })
-   public ResponseEntity<HttpResponse> update(@PathVariable("campagneId") Long campagneId, @RequestBody CampagneRequest campagneRequest){
+   public ResponseEntity<HttpResponse> update(@PathVariable("campagneId") Long campagneId, @Valid @RequestBody CampagneRequest campagneRequest){
 
        log.info("Mise à jour d'une campagne");
       Campagne updateCampagne = campagneService.update(campagneId, modelMapper.map(campagneRequest, Campagne.class));
