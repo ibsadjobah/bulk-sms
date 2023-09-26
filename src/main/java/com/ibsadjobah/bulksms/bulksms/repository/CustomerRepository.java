@@ -16,7 +16,5 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>{
 
     Optional<Customer> findByEmail(String email);
 
-   /* @Query("SELECT c FROM Customer c JOIN FETCH c.group_id  WHERE c.group_id IS NOT NULL")
-    List<Customer> findAllWithGroups();*/
 
 }

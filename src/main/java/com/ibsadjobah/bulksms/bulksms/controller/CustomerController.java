@@ -128,12 +128,12 @@ public class CustomerController {
 
         Customer customer =  new Customer();
 
-        Group group = groupService.findById(Long.valueOf(customerRequest.getGroupId()));
+       // Group group = groupService.findById(Long.valueOf(customerRequest.getGroupId()));
 
         customer.setName(customerRequest.getName());
         customer.setPhone(customerRequest.getPhone());
         customer.setEmail(customerRequest.getEmail());
-        customer.setGroup(group);
+        //customer.setGroup(group);
 
 
         CustomerResponse data = modelMapper.map(customerService.create(customer), CustomerResponse.class);

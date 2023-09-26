@@ -30,10 +30,6 @@ public class CustomerService {
 
     }
 
-    /*public List<Customer> allWithGroups() {
-        return customerRepository.findAllWithGroups(); // Utilisez une méthode appropriée dans le repository
-    }*/
-
 
     public Customer show(Long customerId){
         log.info("affichage du client" +customerId);
@@ -51,7 +47,6 @@ public class CustomerService {
         Optional<Customer> customerbyEmail = customerRepository.findByEmail(customer.getEmail());
 
 
-
         if(customerbyPhone.isPresent())
             throw new ResourceAlreadyExistException("ce numero de telephone existe déjà");
 
@@ -61,23 +56,6 @@ public class CustomerService {
 
         return customerRepository.save(customer);
 
-        /*Customer customerVerification = customerRepository.findById(customerId).orElse(null);
-
-         if (customerVerification != null){
-             Group group = customerVer.getGroup();
-             if (group != null){
-                 Long groupId = group.getId();
-                 System.out.println("ID du groupe associé au client : " + groupId);
-                 String groupName = group.getName();
-             }else {
-                 // Le client n'est pas lié à un groupe
-                 System.out.println("Le client n'est pas lié à un groupe");
-             }
-
-         }else {
-             System.out.println("Le client n a pas ete trouvé");
-
-         }*/
 
     }
 
